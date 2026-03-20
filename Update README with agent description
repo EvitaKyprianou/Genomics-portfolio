@@ -1,0 +1,75 @@
+# Variant Lookup Agent
+
+A beginner-friendly Python agent for genomic variant annotation, 
+built as part of an MSc Genomic Medicine portfolio at Queen Mary 
+University London.
+
+## What it does
+
+Given a list of SNP rsIDs, this agent automatically:
+
+1. Queries the **Ensembl REST API** for chromosome, genomic 
+   position, and predicted molecular consequence (GRCh38)
+2. Queries the **gnomAD v4 API** for global allele frequency
+3. Flags any variant with AF below 1% as **RARE**, following 
+   ACMG variant classification guidelines (Richards et al., 2015)
+4. Exports a structured results table to `variant_report.csv`
+5. Prints a final summary count of rare vs common variants
+
+## Example output
+```
+rsID         Chr  Position     AF (global)    Flag
+rs429358     19   44908684     0.157400       common
+rs7412       19   44908822     0.077800       common
+rs1801133    1    11796321     0.275200       common
+rs334        11   5227002      0.012700       common
+
+Total variants queried : 4
+Common  (AF >= 1%)     : 4  (100.0%)
+Rare    (AF <  1%)     : 0  (0.0%)
+```
+
+## How to run it
+
+1. Open the notebook in [Google Colab](https://colab.research.google.com/)
+2. Run all cells in order
+3. Download `variant_report.csv` from the Colab file browser
+
+No installation required. All libraries (`requests`, `csv`, `json`, 
+`time`, `os`) are built into Python.
+
+## Data sources
+
+| Source | What it provides | Access |
+|--------|-----------------|--------|
+| [Ensembl REST API](https://rest.ensembl.org) | Chromosome, position, consequence | Free, no login |
+| [gnomAD v4](https://gnomad.broadinstitute.org) | Global allele frequency | Free, GraphQL API |
+
+## Rare variant threshold
+
+Variants are flagged as RARE if global gnomAD genome AF < 0.01 (1%).  
+This threshold follows ACMG/AMP guidelines for variant interpretation.  
+Note: global AF should be interpreted alongside population-specific 
+subgroup frequencies, particularly for variants with known 
+population stratification (e.g. rs334, HBB sickle cell variant).
+
+## Variants tested
+
+| rsID | Gene | Clinical relevance |
+|------|------|--------------------|
+| rs429358 | APOE | APOE e4 allele, Alzheimer's risk |
+| rs7412 | APOE | APOE e2 allele, defines haplotype |
+| rs1801133 | MTHFR | C677T, folate metabolism |
+| rs334 | HBB | Sickle cell disease (Glu6Val) |
+
+## Planned next steps
+
+- [ ] Read rsIDs from an input CSV file
+- [ ] Add ClinVar pathogenicity classification
+- [ ] Conditional logic: trigger deeper lookup for rare + pathogenic variants
+- [ ] Generate HTML or PDF report output
+
+## Author
+
+Evita Kyprianou  
+MSc Genomic Medicine, Queen Mary University London
