@@ -1,0 +1,23 @@
+## Current version -- v4 (March 2026)
+
+- [x] Query Ensembl REST API for chromosome, position, consequence
+- [x] Query gnomAD v4 API for global allele frequency
+- [x] Flag variants with AF below 1% as RARE
+- [x] Export results to variant_report.csv
+- [x] Print final summary counts of rare vs common variants
+- [x] Read rsIDs from an input CSV file
+- [x] Fix gnomAD variant normalisation -- tries both allele orientations automatically
+
+## Planned next steps
+
+- [ ] Add ClinVar pathogenicity classification
+- [ ] Conditional logic: rare + pathogenic triggers deeper lookup
+- [ ] Generate HTML or PDF report output
+
+## Known issues fixed
+
+### gnomAD variant normalisation (fixed -- March 2026)
+Early versions returned "not in gnomAD" for some variants that
+genuinely exist in the database. Root cause: Ensembl and gnomAD
+use different allele orientations for some variants. Fix: agent
+now tries both REF/ALT and ALT/REF orientations automatically.
